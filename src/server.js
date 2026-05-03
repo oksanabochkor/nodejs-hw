@@ -1,7 +1,7 @@
-const dotenv = require('dotenv');
-const express = require('express');
-const cors = require('cors');
-const pino = require('pino-http');
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import pino from 'pino-http';
 
 dotenv.config();
 
@@ -29,18 +29,18 @@ app.get('/notes/:noteId', (req, res) => {
 });
 
 // test error
-app.get('/test-error', () => {
-  throw new Error('Simulated server error');
+app.get('/test-error', (req, res, next) => {
+  next(new Error('Simulated server error'));
 });
 
-// 404 middleware
+// 404
 app.use((req, res) => {
   res.status(404).json({
     message: 'Route not found',
   });
 });
 
-// 500 middleware
+// error handler
 app.use((err, req, res, next) => {
   res.status(500).json({
     message: err.message,
@@ -50,4 +50,5 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 

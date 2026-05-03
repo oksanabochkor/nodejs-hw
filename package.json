@@ -19,18 +19,17 @@
     "url": "https://github.com/oksanabochkor/nodejs-hw/issues"
   },
   "homepage": "https://github.com/oksanabochkor/nodejs-hw#readme",
- "devDependencies": {
-  "@eslint/js": "^9.x.x",
-  "eslint": "^9.x.x",
-  "globals": "^15.x.x",
-  "nodemon": "^3.x.x"
-},
-"dependencies": {
-  "cors": "^x.x.x",
-  "dotenv": "^x.x.x",
-  "express": "^x.x.x",
-  "pino-http": "^x.x.x",
-  "pino-pretty": "^x.x.x"
-}
-
+  "devDependencies": {
+    "@eslint/js": "^9.x.x",
+    "eslint": "^9.x.x",
+    "globals": "^15.x.x",
+    "nodemon": "^3.x.x"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "pino-http": "^11.0.0",
+    "pino-pretty": "^x.x.x"
+  }
 }
