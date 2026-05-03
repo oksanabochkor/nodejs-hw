@@ -1,12 +1,13 @@
 {
   "name": "nodejs-hw",
   "version": "1.0.0",
+  "type": "commonjs",
   "description": "",
   "main": "index.js",
   "scripts": {
-  "start": "node src/server.js",
-  "dev": "nodemon src/server.js"
-},
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/oksanabochkor/nodejs-hw.git"
@@ -14,19 +15,22 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/oksanabochkor/nodejs-hw/issues"
   },
   "homepage": "https://github.com/oksanabochkor/nodejs-hw#readme",
-  "dependencies": {
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "pino-http": "^11.0.0"
-  },
-  "devDependencies": {
-    "eslint": "^10.3.0",
-    "nodemon": "^3.1.14"
-  }
+ "devDependencies": {
+  "@eslint/js": "^9.x.x",
+  "eslint": "^9.x.x",
+  "globals": "^15.x.x",
+  "nodemon": "^3.x.x"
+},
+"dependencies": {
+  "cors": "^x.x.x",
+  "dotenv": "^x.x.x",
+  "express": "^x.x.x",
+  "pino-http": "^x.x.x",
+  "pino-pretty": "^x.x.x"
+}
+
 }
