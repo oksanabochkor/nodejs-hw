@@ -10,9 +10,9 @@ import {
 const router = Router();
 
 router.get('/', getAllNotes);
-router.get('/:id', getNoteById);
+router.get('/:noteId', getNoteById);
 router.post('/', createNote);
-router.put('/:id', updateNote);
-router.delete('/:id', deleteNote);
+router.patch('/:noteId', updateNote);
+router.delete('/:noteId', deleteNote);
 
 export default router;
