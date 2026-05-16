@@ -9,9 +9,9 @@ import {
 
 const router = Router();
 
-router.get('/', getAllNotes);
+router.get('/notes', getAllNotes);
 router.get('/notes/:noteId', getNoteById);
-router.post('/', createNote);
+router.post('/notes', createNote);
 router.patch('/notes/:noteId', updateNote);
 router.delete('/notes/:noteId', deleteNote);
 
