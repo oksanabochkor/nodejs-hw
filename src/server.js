@@ -23,7 +23,8 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use('/notes', notesRoutes);
+// ❗ ВАЖЛИВО: без /notes
+app.use(notesRoutes);
 
 // 404
 app.use(notFoundHandler);
