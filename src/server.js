@@ -3,9 +3,11 @@ dotenv.config();
 
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import { errors } from 'celebrate';
 
 import notesRoutes from './routes/notesRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 
 import { connectMongoDB } from './db/connectMongoDB.js';
 
@@ -23,7 +25,11 @@ app.use(cors());
 
 app.use(express.json());
 
-// ❗ ВАЖЛИВО: без /notes
+app.use(cookieParser());
+
+app.use('/auth', authRoutes);
+
+// маршрути нотаток
 app.use(notesRoutes);
 
 // 404
@@ -48,5 +54,4 @@ const bootstrap = async () => {
 };
 
 bootstrap();
-
 

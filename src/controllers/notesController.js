@@ -11,18 +11,28 @@ export const getAllNotes = async (req, res) => {
 
   const skip = (page - 1) * perPage;
 
-  let query = Note.find();
+  let query = Note.find({
+    userId: req.user._id,
+  });
 
-  // filter by tag
   if (tag) {
     query = query.where('tag').equals(tag);
   }
 
-  // search (title + content) через OR chaining
   if (search) {
     query = query.or([
-      { title: { $regex: search, $options: 'i' } },
-      { content: { $regex: search, $options: 'i' } },
+      {
+        title: {
+          $regex: search,
+          $options: 'i',
+        },
+      },
+      {
+        content: {
+          $regex: search,
+          $options: 'i',
+        },
+      },
     ]);
   }
 
@@ -35,50 +45,93 @@ export const getAllNotes = async (req, res) => {
     page: Number(page),
     perPage: Number(perPage),
     totalNotes,
-    totalPages: Math.ceil(totalNotes / perPage),
+    totalPages: Math.ceil(
+      totalNotes / perPage,
+    ),
     notes,
   });
 };
 
-export const getNoteById = async (req, res) => {
+export const getNoteById = async (
+  req,
+  res,
+) => {
   const { noteId } = req.params;
 
-  const note = await Note.findById(noteId);
+  const note = await Note.findOne({
+    _id: noteId,
+    userId: req.user._id,
+  });
 
   if (!note) {
-    throw createHttpError(404, 'Note not found');
+    throw createHttpError(
+      404,
+      'Note not found',
+    );
   }
 
-  res.json(note);
+  res.status(200).json(note);
 };
 
-export const createNote = async (req, res) => {
-  const newNote = await Note.create(req.body);
+export const createNote = async (
+  req,
+  res,
+) => {
+  const newNote = await Note.create({
+    ...req.body,
+    userId: req.user._id,
+  });
+
   res.status(201).json(newNote);
 };
 
-export const deleteNote = async (req, res) => {
+export const deleteNote = async (
+  req,
+  res,
+) => {
   const { noteId } = req.params;
 
-  const deleted = await Note.findByIdAndDelete(noteId);
+  const deleted = await Note.findOneAndDelete(
+    {
+      _id: noteId,
+      userId: req.user._id,
+    },
+  );
 
   if (!deleted) {
-    throw createHttpError(404, 'Note not found');
+    throw createHttpError(
+      404,
+      'Note not found',
+    );
   }
 
-  res.json(deleted);
+  res.status(200).json(deleted);
 };
 
-export const updateNote = async (req, res) => {
+export const updateNote = async (
+  req,
+  res,
+) => {
   const { noteId } = req.params;
 
-  const updated = await Note.findByIdAndUpdate(noteId, req.body, {
-    returnDocument: 'after',
-  });
+  const updated =
+    await Note.findOneAndUpdate(
+      {
+        _id: noteId,
+        userId: req.user._id,
+      },
+      req.body,
+      {
+        returnDocument: 'after',
+      },
+    );
 
   if (!updated) {
-    throw createHttpError(404, 'Note not found');
+    throw createHttpError(
+      404,
+      'Note not found',
+    );
   }
 
-  res.json(updated);
+  res.status(200).json(updated);
 };
