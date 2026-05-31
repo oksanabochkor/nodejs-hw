@@ -20,6 +20,12 @@ const noteSchema = new Schema(
       enum: TAGS,
       default: 'Todo',
     },
+
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+      required: true,
+    },
   },
   {
     timestamps: true,
@@ -27,7 +33,7 @@ const noteSchema = new Schema(
   },
 );
 
-// ❗ індекс окремо (як вимагає ментор)
 noteSchema.index({ tag: 1 });
+noteSchema.index({ userId: 1 });
 
 export const Note = model('Note', noteSchema);

@@ -17,8 +17,9 @@ export const registerUser = async (
   try {
     const { email, password } = req.body;
 
-    const existingUser =
-      await User.findOne({ email });
+    const existingUser = await User.findOne({
+      email,
+    });
 
     if (existingUser) {
       throw createHttpError(
@@ -95,60 +96,71 @@ export const loginUser = async (
   }
 };
 
-export const refreshUserSession =
-  async (req, res, next) => {
-    try {
-      const {
-        sessionId,
+export const refreshUserSession = async (
+  req,
+  res,
+  next,
+) => {
+  try {
+    const {
+      sessionId,
+      refreshToken,
+    } = req.cookies;
+
+    const session =
+      await Session.findOne({
+        _id: sessionId,
         refreshToken,
-      } = req.cookies;
+      });
 
-      const session =
-        await Session.findOne({
-          _id: sessionId,
-          refreshToken,
-        });
+    if (!session) {
+      throw createHttpError(
+        401,
+        'Session not found',
+      );
+    }
 
-      if (!session) {
-        throw createHttpError(
-          401,
-          'Session not found',
-        );
-      }
-
-      if (
-        new Date() >
-        new Date(
-          session.refreshTokenValidUntil,
-        )
-      ) {
-        throw createHttpError(
-          401,
-          'Session token expired',
-        );
-      }
-
+    if (
+      new Date() >
+      new Date(
+        session.refreshTokenValidUntil,
+      )
+    ) {
       await Session.findByIdAndDelete(
         session._id,
       );
 
-      const newSession =
-        await createSession(
-          session.userId,
-        );
+      res.clearCookie('sessionId');
+      res.clearCookie('accessToken');
+      res.clearCookie('refreshToken');
 
-      setSessionCookies(
-        res,
-        newSession,
+      throw createHttpError(
+        401,
+        'Session token expired',
+      );
+    }
+
+    await Session.findByIdAndDelete(
+      session._id,
+    );
+
+    const newSession =
+      await createSession(
+        session.userId,
       );
 
-      res.status(200).json({
-        message: 'Session refreshed',
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
+    setSessionCookies(
+      res,
+      newSession,
+    );
+
+    res.status(200).json({
+      message: 'Session refreshed',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const logoutUser = async (
   req,
