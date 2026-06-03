@@ -8,8 +8,8 @@ import { errors } from 'celebrate';
 
 import notesRoutes from './routes/notesRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
-import userRoutes from './routes/userRoutes.js'; 
 import { connectMongoDB } from './db/connectMongoDB.js';
 
 import { logger } from './middleware/logger.js';
@@ -21,7 +21,6 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(logger);
-app.use('/users', userRoutes);
 
 app.use(cors());
 
@@ -29,18 +28,16 @@ app.use(express.json());
 
 app.use(cookieParser());
 
-app.use('/auth', authRoutes);
+app.use(authRoutes);
 
-// маршрути нотаток
+app.use(userRoutes);
+
 app.use(notesRoutes);
 
-// 404
 app.use(notFoundHandler);
 
-// celebrate validation errors
 app.use(errors());
 
-// server errors
 app.use(errorHandler);
 
 const bootstrap = async () => {

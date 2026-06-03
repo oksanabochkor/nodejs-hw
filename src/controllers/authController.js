@@ -15,7 +15,7 @@ import {
   setSessionCookies,
 } from '../services/auth.js';
 
-import { sendMail } from '../utils/sendMail.js';
+import { sendEmail } from '../utils/sendMail.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -247,7 +247,8 @@ export const requestResetEmail = async (
     });
 
     try {
-      await sendMail({
+      await sendEmail({
+        from: process.env.SMTP_FROM,
         to: user.email,
         subject: 'Reset password',
         html,

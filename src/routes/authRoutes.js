@@ -20,35 +20,35 @@ import {
 const router = Router();
 
 router.post(
-  '/register',
+  '/auth/register',
   celebrate(registerUserSchema),
   registerUser,
 );
 
 router.post(
-  '/login',
+  '/auth/login',
   celebrate(loginUserSchema),
   loginUser,
 );
 
 router.post(
-  '/refresh',
+  '/auth/refresh',
   refreshUserSession,
 );
 
 router.post(
-  '/logout',
+  '/auth/logout',
   logoutUser,
 );
 
 router.post(
-  '/request-reset-email',
+  '/auth/request-reset-email',
   celebrate(requestResetEmailSchema),
   requestResetEmail,
 );
 
 router.post(
-  '/reset-password',
+  '/auth/reset-password',
   celebrate(resetPasswordSchema),
   resetPassword,
 );
